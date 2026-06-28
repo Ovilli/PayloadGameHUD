@@ -109,6 +109,114 @@
       ]
     },
     {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_bastion.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue030"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_shockwave.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue031"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_charge.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue032"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_taunt.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue033"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_firestorm.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue034"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_emberdash.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue035"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_mark.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue036"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_grapple.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue037"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_healbloom.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue038"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_lifelink.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue039"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_rally.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue03a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/ability_barrier.png",
+      "ascent": 14,
+      "height": 20,
+      "chars": [
+        "\ue03b"
+      ]
+    },
+    {
       "type": "space",
       "advances": {
         "\ue0f1": -1,

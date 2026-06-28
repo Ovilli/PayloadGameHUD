@@ -158,6 +158,43 @@ for key, role, label in HEROES:
             dd.text((6, 9), label, fill=(255, 255, 255, 255), font=PFONT)
     img.save(os.path.join(fontdir, f"hero_{key}.png"))
 
+# ---- ability icons -----------------------------------------------------------
+# One emblem per ability (placeholder vector symbols; a designer can replace the PNGs).
+# Order MUST match Hero enum order, two per hero (slot 0 then slot 1) -> U+E030..E03B.
+ASIZE = 32
+WHITE = (255, 255, 255, 255)
+
+def _shield(d):  d.polygon([(16, 6), (25, 10), (25, 18), (16, 27), (7, 18), (7, 10)], outline=WHITE, width=2)
+def _wave(d):    [d.ellipse([16 - r, 16 - r, 16 + r, 16 + r], outline=WHITE, width=2) for r in (5, 9, 13)]
+def _arrow(d):   d.polygon([(9, 8), (24, 16), (9, 24)], fill=WHITE)
+def _bang(d):    (d.rectangle([14, 7, 18, 20], fill=WHITE), d.rectangle([14, 23, 18, 27], fill=WHITE))
+def _flame(d):   d.polygon([(16, 5), (23, 18), (16, 27), (9, 18)], fill=WHITE)
+def _chev(d):    [d.line([(8 + o, 9), (16 + o, 16), (8 + o, 23)], fill=WHITE, width=2) for o in (0, 8)]
+def _crosshair(d): (d.ellipse([8, 8, 24, 24], outline=WHITE, width=2), d.line([(16, 3), (16, 29)], fill=WHITE, width=2), d.line([(3, 16), (29, 16)], fill=WHITE, width=2))
+def _hook(d):    (d.line([(16, 5), (16, 17)], fill=WHITE, width=2), d.arc([10, 13, 22, 27], 0, 180, fill=WHITE, width=2))
+def _plus(d):    (d.rectangle([13, 7, 19, 25], fill=WHITE), d.rectangle([7, 13, 25, 19], fill=WHITE))
+def _link(d):    (d.ellipse([6, 12, 16, 20], outline=WHITE, width=2), d.ellipse([16, 12, 26, 20], outline=WHITE, width=2))
+def _uparrows(d): [d.line([(8, 24 - o), (16, 15 - o), (24, 24 - o)], fill=WHITE, width=2) for o in (0, 8)]
+def _hex(d):     d.polygon([(16, 5), (26, 11), (26, 21), (16, 27), (6, 21), (6, 11)], outline=WHITE, width=2)
+
+# (ability id, role, symbol) in Hero enum order, slot 0 then slot 1
+ABILITY_ICONS = [
+    ("bastion", "TANK", _shield),   ("shockwave", "TANK", _wave),
+    ("charge", "TANK", _arrow),     ("taunt", "TANK", _bang),
+    ("firestorm", "DAMAGE", _flame), ("emberdash", "DAMAGE", _chev),
+    ("mark", "DAMAGE", _crosshair), ("grapple", "DAMAGE", _hook),
+    ("healbloom", "SUPPORT", _plus), ("lifelink", "SUPPORT", _link),
+    ("rally", "SUPPORT", _uparrows), ("barrier", "SUPPORT", _hex),
+]
+for aid, role, symbol in ABILITY_ICONS:
+    img = Image.new("RGBA", (ASIZE, ASIZE), (0, 0, 0, 0))
+    dd = ImageDraw.Draw(img)
+    bg = ROLE_BG[role]
+    dd.rectangle([1, 1, ASIZE - 2, ASIZE - 2], fill=(bg[0], bg[1], bg[2], 255),
+                 outline=(245, 245, 245, 255), width=2)
+    symbol(dd)
+    img.save(os.path.join(fontdir, f"ability_{aid}.png"))
+
 # ---- font definition ---------------------------------------------------------
 fjson = ensure(PG, "font")
 # (file, codepoint, ascent, height). Lower ascent => drawn lower on the action-bar line.
@@ -173,6 +210,8 @@ bitmaps = [
 ]
 for i, (key, role, label) in enumerate(HEROES):
     bitmaps.append((f"payloadgame:font/hero_{key}.png", 0xE020 + i, -3, 26))  # big, pushed down
+for i, (aid, role, symbol) in enumerate(ABILITY_ICONS):
+    bitmaps.append((f"payloadgame:font/ability_{aid}.png", 0xE030 + i, 14, 20))  # ability emblems
 
 providers = [{"type": "bitmap", "file": fp, "ascent": asc, "height": h, "chars": [chr(cp)]}
              for fp, cp, asc, h in bitmaps]

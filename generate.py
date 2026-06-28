@@ -180,7 +180,7 @@ providers = [{"type": "bitmap", "file": fp, "ascent": asc, "height": h, "chars":
 providers.append({"type": "space", "advances": {
     chr(0xE0F1): -1,     # seamless kern between bar tiles
     chr(0xE0F2): -117,   # rewind to box start after drawing the frame (frame advance = 116+1)
-    chr(0xE0F3): -440,   # shift the whole bottom HUD left of centre (toward the corner)
+    chr(0xE0F3): 440,    # shift the whole bottom HUD right of centre (clear of bottom-left chat)
     chr(0xE0F4): 3,      # small inset / inter-element gap
     chr(0xE0F6): 10,     # gap from box edge to the role label
 }})

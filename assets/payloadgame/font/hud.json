@@ -1,0 +1,109 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/seg_fill.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue010"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/seg_empty.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue011"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/flag.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue002"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hp_full.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue012"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hp_empty.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue013"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hero_bulwark.png",
+      "ascent": 12,
+      "height": 16,
+      "chars": [
+        "\ue020"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hero_bullrush.png",
+      "ascent": 12,
+      "height": 16,
+      "chars": [
+        "\ue021"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hero_pyre.png",
+      "ascent": 12,
+      "height": 16,
+      "chars": [
+        "\ue022"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hero_volt.png",
+      "ascent": 12,
+      "height": 16,
+      "chars": [
+        "\ue023"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hero_bloom.png",
+      "ascent": 12,
+      "height": 16,
+      "chars": [
+        "\ue024"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hero_aegis.png",
+      "ascent": 12,
+      "height": 16,
+      "chars": [
+        "\ue025"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        "\ue0f1": -1
+      }
+    }
+  ]
+}

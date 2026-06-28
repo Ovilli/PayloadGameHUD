@@ -29,8 +29,17 @@
     },
     {
       "type": "bitmap",
-      "file": "payloadgame:font/hp_full.png",
+      "file": "payloadgame:font/frame.png",
       "ascent": -1,
+      "height": 30,
+      "chars": [
+        "\ue001"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "payloadgame:font/hp_full.png",
+      "ascent": -9,
       "height": 14,
       "chars": [
         "\ue012"
@@ -39,7 +48,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hp_empty.png",
-      "ascent": -1,
+      "ascent": -9,
       "height": 14,
       "chars": [
         "\ue013"
@@ -48,7 +57,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hero_bulwark.png",
-      "ascent": 5,
+      "ascent": -3,
       "height": 26,
       "chars": [
         "\ue020"
@@ -57,7 +66,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hero_bullrush.png",
-      "ascent": 5,
+      "ascent": -3,
       "height": 26,
       "chars": [
         "\ue021"
@@ -66,7 +75,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hero_pyre.png",
-      "ascent": 5,
+      "ascent": -3,
       "height": 26,
       "chars": [
         "\ue022"
@@ -75,7 +84,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hero_volt.png",
-      "ascent": 5,
+      "ascent": -3,
       "height": 26,
       "chars": [
         "\ue023"
@@ -84,7 +93,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hero_bloom.png",
-      "ascent": 5,
+      "ascent": -3,
       "height": 26,
       "chars": [
         "\ue024"
@@ -93,7 +102,7 @@
     {
       "type": "bitmap",
       "file": "payloadgame:font/hero_aegis.png",
-      "ascent": 5,
+      "ascent": -3,
       "height": 26,
       "chars": [
         "\ue025"
@@ -102,7 +111,11 @@
     {
       "type": "space",
       "advances": {
-        "\ue0f1": -1
+        "\ue0f1": -1,
+        "\ue0f2": -117,
+        "\ue0f3": -220,
+        "\ue0f4": 3,
+        "\ue0f6": 10
       }
     }
   ]

@@ -112,6 +112,14 @@ df.rectangle([2, 0, 2, 0], fill=(40, 40, 40, 255))
 df.rectangle([4, 0, 4, 0], fill=(40, 40, 40, 255))
 flag.save(os.path.join(fontdir, "flag.png"))
 
+# nameplate box drawn BEHIND the portrait + health strip (via negative-space layering).
+# Width must cover: inset(3) + portrait(27) + gap(3) + health bar(80) + inset(3) = 116.
+FRAME_W, FRAME_H = 116, 30
+frame = Image.new("RGBA", (FRAME_W, FRAME_H), (12, 12, 18, 200))  # dark translucent fill
+dfr = ImageDraw.Draw(frame)
+dfr.rectangle([0, 0, FRAME_W - 1, FRAME_H - 1], outline=(210, 210, 220, 255), width=2)
+frame.save(os.path.join(fontdir, "frame.png"))
+
 # ---- hero portraits ----------------------------------------------------------
 PSIZE = 32  # portrait source resolution (rendered larger via the font height)
 PFONT = None
@@ -159,16 +167,23 @@ bitmaps = [
     ("payloadgame:font/seg_fill.png",  0xE010, 7, 8),
     ("payloadgame:font/seg_empty.png", 0xE011, 7, 8),
     ("payloadgame:font/flag.png",      0xE002, 7, 8),
-    ("payloadgame:font/hp_full.png",   0xE012, -1, 14),   # health strip, pushed down
-    ("payloadgame:font/hp_empty.png",  0xE013, -1, 14),
+    ("payloadgame:font/frame.png",     0xE001, -1, 30),   # nameplate box (behind content)
+    ("payloadgame:font/hp_full.png",   0xE012, -9, 14),   # health strip, pushed well down
+    ("payloadgame:font/hp_empty.png",  0xE013, -9, 14),
 ]
 for i, (key, role, label) in enumerate(HEROES):
-    bitmaps.append((f"payloadgame:font/hero_{key}.png", 0xE020 + i, 5, 26))  # big, pushed down
+    bitmaps.append((f"payloadgame:font/hero_{key}.png", 0xE020 + i, -3, 26))  # big, pushed down
 
 providers = [{"type": "bitmap", "file": fp, "ascent": asc, "height": h, "chars": [chr(cp)]}
              for fp, cp, asc, h in bitmaps]
-# negative-kern glyph: -1px advance, inserted between tiles to remove the gap
-providers.append({"type": "space", "advances": {chr(0xE0F1): -1}})
+# Spacing glyphs (advance = pixels the cursor moves). Negative = move left.
+providers.append({"type": "space", "advances": {
+    chr(0xE0F1): -1,     # seamless kern between bar tiles
+    chr(0xE0F2): -117,   # rewind to box start after drawing the frame (frame advance = 116+1)
+    chr(0xE0F3): -220,   # shift the whole bottom HUD left of centre
+    chr(0xE0F4): 3,      # small inset / inter-element gap
+    chr(0xE0F6): 10,     # gap from box edge to the role label
+}})
 
 with open(os.path.join(fjson, "hud.json"), "w") as f:
     json.dump({"providers": providers}, f, indent=2, ensure_ascii=True)

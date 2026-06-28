@@ -97,8 +97,9 @@ def bar_tile(w, h, fill, border):
 
 bar_tile(8, 8, (225, 175, 45, 255), (120, 90, 20, 255)).save(os.path.join(fontdir, "seg_fill.png"))
 bar_tile(8, 8, (55, 55, 65, 255), (30, 30, 36, 255)).save(os.path.join(fontdir, "seg_empty.png"))
-bar_tile(6, 8, (215, 55, 55, 255), (110, 25, 25, 255)).save(os.path.join(fontdir, "hp_full.png"))
-bar_tile(6, 8, (55, 40, 40, 255), (30, 24, 24, 255)).save(os.path.join(fontdir, "hp_empty.png"))
+# health tiles are tall + chunky so the bar reads like an Overwatch health strip
+bar_tile(8, 14, (215, 55, 55, 255), (110, 25, 25, 255)).save(os.path.join(fontdir, "hp_full.png"))
+bar_tile(8, 14, (55, 40, 40, 255), (30, 24, 24, 255)).save(os.path.join(fontdir, "hp_empty.png"))
 
 # finish flag (8x8): pole + small checkered flag
 flag = Image.new("RGBA", (8, 8), (0, 0, 0, 0))
@@ -112,10 +113,20 @@ df.rectangle([4, 0, 4, 0], fill=(40, 40, 40, 255))
 flag.save(os.path.join(fontdir, "flag.png"))
 
 # ---- hero portraits ----------------------------------------------------------
-try:
-    PFONT = ImageFont.load_default()
-except Exception:
-    PFONT = None
+PSIZE = 32  # portrait source resolution (rendered larger via the font height)
+PFONT = None
+for _path in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+              "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
+    try:
+        PFONT = ImageFont.truetype(_path, 14)
+        break
+    except Exception:
+        pass
+if PFONT is None:
+    try:
+        PFONT = ImageFont.load_default()
+    except Exception:
+        PFONT = None
 
 ROLE_BG = {"TANK": (200, 160, 40), "DAMAGE": (200, 60, 60), "SUPPORT": (70, 170, 80)}
 # (key, role, label) in enum order -> E020..E025
@@ -125,25 +136,34 @@ HEROES = [
     ("bloom", "SUPPORT", "BL"), ("aegis", "SUPPORT", "AE"),
 ]
 for key, role, label in HEROES:
-    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    img = Image.new("RGBA", (PSIZE, PSIZE), (0, 0, 0, 0))
     dd = ImageDraw.Draw(img)
     bg = ROLE_BG[role]
-    dd.rectangle([0, 0, 15, 15], fill=(bg[0], bg[1], bg[2], 255), outline=(245, 245, 245, 255))
+    dd.rectangle([0, 0, PSIZE - 1, PSIZE - 1], fill=(bg[0], bg[1], bg[2], 255),
+                 outline=(245, 245, 245, 255), width=2)
     if PFONT:
-        dd.text((2, 4), label, fill=(255, 255, 255, 255), font=PFONT)
+        try:
+            l, t, r, b = dd.textbbox((0, 0), label, font=PFONT)
+            dd.text(((PSIZE - (r - l)) / 2 - l, (PSIZE - (b - t)) / 2 - t),
+                    label, fill=(255, 255, 255, 255), font=PFONT)
+        except Exception:
+            dd.text((6, 9), label, fill=(255, 255, 255, 255), font=PFONT)
     img.save(os.path.join(fontdir, f"hero_{key}.png"))
 
 # ---- font definition ---------------------------------------------------------
 fjson = ensure(PG, "font")
+# (file, codepoint, ascent, height). Lower ascent => drawn lower on the action-bar line.
+# The boss-bar payload tiles stay at the normal text line; the bottom HUD (health + hero
+# portrait) is pushed well down and enlarged so it reads like an Overwatch nameplate.
 bitmaps = [
     ("payloadgame:font/seg_fill.png",  0xE010, 7, 8),
     ("payloadgame:font/seg_empty.png", 0xE011, 7, 8),
     ("payloadgame:font/flag.png",      0xE002, 7, 8),
-    ("payloadgame:font/hp_full.png",   0xE012, 7, 8),
-    ("payloadgame:font/hp_empty.png",  0xE013, 7, 8),
+    ("payloadgame:font/hp_full.png",   0xE012, -1, 14),   # health strip, pushed down
+    ("payloadgame:font/hp_empty.png",  0xE013, -1, 14),
 ]
 for i, (key, role, label) in enumerate(HEROES):
-    bitmaps.append((f"payloadgame:font/hero_{key}.png", 0xE020 + i, 12, 16))
+    bitmaps.append((f"payloadgame:font/hero_{key}.png", 0xE020 + i, 5, 26))  # big, pushed down
 
 providers = [{"type": "bitmap", "file": fp, "ascent": asc, "height": h, "chars": [chr(cp)]}
              for fp, cp, asc, h in bitmaps]

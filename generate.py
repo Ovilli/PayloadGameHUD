@@ -47,6 +47,43 @@ transparent = Image.new("RGBA", (182, 5), (0, 0, 0, 0))
 for n in names:
     transparent.save(os.path.join(bb, f"{n}.png"))
 
+# ---- hide vanilla HUD elements ----------------------------------------------
+# Our custom font HUD replaces the survival overlay, so make the vanilla hearts,
+# armor, hunger, air and XP bar fully transparent. (1.20.5+ moved these to sprites
+# under gui/sprites/hud/.) Overriding sprites that don't exist is harmless.
+hud = ensure(MC, "textures", "gui", "sprites", "hud")
+blank9 = Image.new("RGBA", (9, 9), (0, 0, 0, 0))      # heart / armor / food / air icons
+blankxp = Image.new("RGBA", (182, 5), (0, 0, 0, 0))   # experience bar strip
+
+# hearts live in a sub-folder; cover every state variant
+heart_dir = ensure(hud, "heart")
+heart_prefixes = ["", "hardcore_", "poisoned_", "poisoned_hardcore_", "withered_",
+                  "withered_hardcore_", "absorbing_", "absorbing_hardcore_",
+                  "frozen_", "frozen_hardcore_"]
+heart_names = []
+for pre in heart_prefixes:
+    for kind in ("full", "full_blinking", "half", "half_blinking"):
+        heart_names.append(pre + kind)
+heart_names += ["container", "container_blinking",
+                "hardcore_container", "hardcore_container_blinking",
+                "vehicle_container", "vehicle_full", "vehicle_half"]
+for n in heart_names:
+    blank9.save(os.path.join(heart_dir, f"{n}.png"))
+
+# armor, hunger/food and air bubbles sit directly under hud/
+hud_icons = [
+    "armor_empty", "armor_half", "armor_full",
+    "food_empty", "food_half", "food_full",
+    "food_empty_hunger", "food_half_hunger", "food_full_hunger",
+    "air", "air_bursting",
+]
+for n in hud_icons:
+    blank9.save(os.path.join(hud, f"{n}.png"))
+
+# experience bar (background + green progress fill)
+for n in ("experience_bar_background", "experience_bar_progress"):
+    blankxp.save(os.path.join(hud, f"{n}.png"))
+
 # ---- HUD glyph bitmaps -------------------------------------------------------
 fontdir = ensure(PG, "textures", "font")
 
